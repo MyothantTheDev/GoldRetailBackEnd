@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class User extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,17 +13,7 @@ class User extends Controller
      */
     public function index()
     {
-        // Authenticate User
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // Create User
+        //
     }
 
     /**
@@ -45,17 +35,6 @@ class User extends Controller
      */
     public function show($id)
     {
-        // Get User
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
         //
     }
 
@@ -68,7 +47,7 @@ class User extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Update User
+        //
     }
 
     /**
@@ -79,6 +58,6 @@ class User extends Controller
      */
     public function destroy($id)
     {
-        // Delete User
+        //
     }
 }
