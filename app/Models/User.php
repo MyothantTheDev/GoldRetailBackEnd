@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable;
@@ -12,8 +11,9 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model implements AuthenticatableContract,JWTSubject
+class User extends Model implements AuthenticatableContract, JWTSubject
 {
     use Authenticatable, Notifiable;
 
@@ -26,10 +26,12 @@ class User extends Model implements AuthenticatableContract,JWTSubject
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'role',
         'email',
         'password',
+        'is_admin',
+        'is_staff',
     ];
 
     /**
@@ -59,7 +61,9 @@ class User extends Model implements AuthenticatableContract,JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+
+        ];
     }
 }
 
