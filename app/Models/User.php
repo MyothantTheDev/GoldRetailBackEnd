@@ -15,7 +15,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, JWTSubject
 {
-    use Authenticatable, Notifiable;
+    use Authenticatable, Notifiable, HasApiTokens;
 
     protected $connection = "mongodb";
     protected $collection = "users";
@@ -62,7 +62,9 @@ class User extends Model implements AuthenticatableContract, JWTSubject
     public function getJWTCustomClaims()
     {
         return [
-
+            'role' => $this->role,
+            'is_admin' => $this->is_admin,
+            'is_staff' => $this->is_staff,
         ];
     }
 }
