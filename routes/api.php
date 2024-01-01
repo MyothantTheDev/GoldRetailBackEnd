@@ -25,7 +25,7 @@ Route::group([
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'v1','middleware'=> 'api'], function ($route) {
+Route::group(['prefix' => 'v1','middleware'=> 'jwt.auth'], function ($route) {
     Route::group(['prefix'=>'user','middleware'=> 'api'], function ($route) {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::post('register', [UserController::class, 'store'])->name('store');
