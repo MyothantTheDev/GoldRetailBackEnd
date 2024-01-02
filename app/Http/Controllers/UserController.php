@@ -59,6 +59,8 @@ class UserController extends Controller
     public function show($id)
     {
         //
+        $user = User::find($id);
+        return response()->json( $user );
     }
 
     /**
@@ -71,6 +73,21 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validate = $this->validate($request, [
+            "username"=> "required|string",
+            "password"=> "required|min:8",
+            "email" => "required|email:unique",
+        ]);
+        $hashedPassword = Hash::make($request->password);
+        $user = User::find($id);
+        $user->update([
+            "username"=> $request->username,
+            "password"=> $hashedPassword,
+            "email"=> $request->email,
+            "is_admin" => $request->is_admin,
+            "is_staff"=> $request->is_staff,
+        ]);
+        return response()->json( $user );
     }
 
     /**
@@ -82,5 +99,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        $user = User::find($id);
+        $user->delete();
+        return response()->json( [
+            "success"=> true,
+            "user"=> $user
+        ] );
     }
 }
