@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('weights', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('weight1')->unsigned();
-            $table->integer('weight2')->unsigned();
-            $table->integer('weight3')->unsigned();
+            $table->foreignUuid('pawn')->references('id')->on('pawn_id')->nullOnDelete();
+            $table->integer('weight1');
+            $table->integer('weight2');
+            $table->integer('weight3');
             $table->timestamps();
         });
     }
