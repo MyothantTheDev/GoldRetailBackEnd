@@ -16,5 +16,6 @@ class Weight extends Model
         "weight1",
         "weight2",
         "weight3",
+        "pawn_id"
     ];
 }
