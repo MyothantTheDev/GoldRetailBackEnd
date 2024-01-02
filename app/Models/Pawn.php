@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
+use App\Models\Weight;
 
 class Pawn extends Model
 {
@@ -20,4 +21,8 @@ class Pawn extends Model
         "textLoan",
         "remark"
     ] ;
+
+    public function weight() {
+        return $this->hasOne(Weight::class,"pawn_id");
+    }
 }
