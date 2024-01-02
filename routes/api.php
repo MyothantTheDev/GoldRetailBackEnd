@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PawnController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,8 @@ Route::group(['prefix' => 'v1','middleware'=> 'jwt.auth'], function ($route) {
     Route::group(['prefix'=>'user','middleware'=> 'api'], function ($route) {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::post('register', [UserController::class, 'store'])->name('store');
+        Route::get('/pawn/item', [PawnController::class,'index'])->name('pawn.allitems');
+        Route::post('/pawn/item/create', [PawnController::class,'store'])->name('pawn.create');
+        Route::get('/pawn/item/{id}', [PawnController::class, 'show'])->name('pawn.itemshow');
     });
 });
