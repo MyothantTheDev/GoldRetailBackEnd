@@ -11,11 +11,11 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\Model;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-
-class User extends Model implements AuthenticatableContract
+class User extends Model implements AuthenticatableContract, JWTSubject
 {
-    use Authenticatable, Notifiable;
+    use Authenticatable, Notifiable, HasApiTokens;
 
     protected $connection = "mongodb";
     protected $collection = "users";
@@ -26,9 +26,12 @@ class User extends Model implements AuthenticatableContract
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
+        'role',
         'email',
         'password',
+        'is_admin',
+        'is_staff',
     ];
 
     /**
@@ -41,6 +44,7 @@ class User extends Model implements AuthenticatableContract
         'remember_token',
     ];
 
+
     /**
      * The attributes that should be cast.
      *
@@ -49,4 +53,20 @@ class User extends Model implements AuthenticatableContract
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [
+            'role' => $this->role,
+            'is_admin' => $this->is_admin,
+            'is_staff' => $this->is_staff,
+        ];
+    }
 }
+
+
