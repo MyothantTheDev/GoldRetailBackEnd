@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pawn;
 use App\Models\Weight;
 use Illuminate\Http\Request;
-use MongoDB\BSON\ObjectId;
-
 class PawnController extends Controller
 {
     /**
@@ -80,9 +78,39 @@ class PawnController extends Controller
      * @param  \App\Models\Pawn  $pawn
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pawn $pawn)
+    public function update(Request $request, $id)
     {
         //
+        try {
+            //update Pawn table and weight table
+            $request->validate([
+                "name"=> "required|string",
+                "type"=> "required|string",
+                "weight"=> "required|array",
+                "loan"=> "required",
+                "textLoan"=> "required",
+                "remark"=> "required",
+            ]);
+            $weight = [
+                "weight1" => $request->weight[0],
+                "weight2" => $request->weight[1],
+                "weight3" => $request->weight[2],
+            ];
+            $pawn = Pawn::with("weight")->findOrFail($id);
+            $pawn->weight->update($weight);
+            $pawn->update([
+                "name"=> $request->name,
+                "type"=> $request->type,
+                "loan"=>$request->loan,
+                "textLoan" => $request->textLoan,
+                "remark"=> $request->remark,
+            ]);
+            $pawn->save();
+            return response()->json([$pawn,"message" => "Pawn and Weight updated successfully."], 200);
+        } catch (\Exception $e) {
+            //catch error;
+            return response()->json(["message" => "Failed to update Pawn and Weight.","detail" => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -91,8 +119,18 @@ class PawnController extends Controller
      * @param  \App\Models\Pawn  $pawn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pawn $pawn)
+    public function destroy(Pawn $id)
     {
-        //
+        //Delete Pawn table record
+        try {
+            //code...
+            $pawn = Pawn::with("weight")->findOrFail($id);
+            $pawn->weight->delete();
+            $pawn->delete();
+            return response()->json([$pawn,"message" => "Pawn and Weight deleted successfully."], 200);
+        } catch (\Exception $e) {
+            //throw $th;
+            return response()->json(["message" => "Failed to delete Pawn and Weight.","detail" => $e->getMessage()], 500);
+        }
     }
 }

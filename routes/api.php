@@ -33,5 +33,7 @@ Route::group(['prefix' => 'v1','middleware'=> 'jwt.auth'], function ($route) {
         Route::get('/pawn/item', [PawnController::class,'index'])->name('pawn.allitems');
         Route::post('/pawn/item/create', [PawnController::class,'store'])->name('pawn.create');
         Route::get('/pawn/item/{id}', [PawnController::class, 'show'])->name('pawn.itemshow');
+        Route::get('/pawn/item/update/{id}', [PawnController::class, 'update'])->name('pawn.itemupdate');
+        Route::get('/pawn/item/delete/{id}', [PawnController::class, 'destory'])->name('pawn.itemdestory');
     });
 });
