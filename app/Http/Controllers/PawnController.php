@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pawn;
 use App\Models\Weight;
 use Illuminate\Http\Request;
+
 class PawnController extends Controller
 {
     /**
@@ -14,9 +15,38 @@ class PawnController extends Controller
      */
     public function index()
     {
-        //
-        $pawn = Pawn::all();
-        return response()->json($pawn);
+
+        // $pawn = Pawn::raw(function ($collection) {
+        //     return $collection->aggregate([
+        //         [
+        //             '$lookup' => [
+        //                 'from' => 'weights',
+        //                 'localField' => 'weight',
+        //                 'foreignField' => '_id',
+        //                 'as' => 'weight_info',
+        //             ],
+        //         ],
+        //         [
+        //             '$project' => [
+        //                 // Include the fields you want in the final result
+        //                 'name' => 1,
+        //                 'type' => 1,
+        //                 'loan' => 1,
+        //                 'textLoan' => 1,
+        //                 'remark' => 1,
+        //                 'weight_info.weight1' => 1,
+        //                 'weight_info.weight2' => 1,
+        //                 'weight_info.weight3' => 1,
+        //             ],
+        //         ],
+        //     ]);
+        // });
+
+        $pawns = Pawn::all();
+        foreach ($pawns as $pawn) {
+            $pawn->totalweight;
+        }
+        return response()->json($pawns);
     }
 
     /**
@@ -37,20 +67,20 @@ class PawnController extends Controller
             "remark"=> "required",
         ]);
         $totalweight = $request->weight;
+        $weight = Weight::create([
+            "weight1"=> $totalweight[0],
+            "weight2"=> $totalweight[1],
+            "weight3"=> $totalweight[2],
+        ]);
         $pawn = Pawn::create([
             "name"=> $request->name,
             "type"=> $request->type,
             "loan"=>$request->loan,
             "textLoan" => $request->textLoan,
             "remark"=> $request->remark,
+            "weight" => $weight->_id,
         ]);
         // $pawnObjectId = new ObjectId($pawn->id);
-        $weight = Weight::create([
-            "weight1"=> $totalweight[0],
-            "weight2"=> $totalweight[1],
-            "weight3"=> $totalweight[2],
-            "pawn_id" => $pawn->id,
-        ]);
         $res = [
             "pawn" => $pawn,
             "weight" => $weight,
@@ -67,7 +97,8 @@ class PawnController extends Controller
     public function show($id)
     {
         //
-        $pawn = Pawn::with("weight")->findOrFail($id);
+        $pawn = Pawn::find($id);
+        $pawn->totalweight;
         return response()->json($pawn);
     }
 
@@ -96,8 +127,8 @@ class PawnController extends Controller
                 "weight2" => $request->weight[1],
                 "weight3" => $request->weight[2],
             ];
-            $pawn = Pawn::with("weight")->findOrFail($id);
-            $pawn->weight->update($weight);
+            $pawn = Pawn::find($id);
+            $pawn->totalweight->update($weight);
             $pawn->update([
                 "name"=> $request->name,
                 "type"=> $request->type,
