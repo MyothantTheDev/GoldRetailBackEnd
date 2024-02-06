@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id()->primary();
+            $table->string('buyer');
             $table->integer('price')->unsigned();
             $table->integer('gold')->unsigned();
             $table->integer('fee')->unsigned();

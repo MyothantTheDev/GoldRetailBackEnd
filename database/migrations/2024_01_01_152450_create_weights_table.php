@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('weights', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->foreignUuid('pawn')->references('id')->on('pawn_id')->nullOnDelete();
+            $table->id()->primary();
             $table->integer('weight1');
             $table->integer('weight2');
             $table->integer('weight3');
