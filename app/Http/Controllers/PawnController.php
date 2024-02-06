@@ -155,7 +155,7 @@ class PawnController extends Controller
         //Delete Pawn table record
         try {
             //code...
-            $pawn = Pawn::with("weight")->findOrFail($id);
+            $pawn = Pawn::findOrFail($id);
             $pawn->weight->delete();
             $pawn->delete();
             return response()->json([$pawn,"message" => "Pawn and Weight deleted successfully."], 200);
