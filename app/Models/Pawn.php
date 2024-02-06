@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\Model;
+use MongoDB\Laravel\Eloquent\Model;
+
 use App\Models\Weight;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pawn extends Model
 {
@@ -22,7 +24,7 @@ class Pawn extends Model
         "remark"
     ] ;
 
-    public function weight() {
-        return $this->hasOne(Weight::class,"pawn_id");
+    public function totalweight(): BelongsTo {
+        return $this->belongsTo(Weight::class,"weight");
     }
 }
