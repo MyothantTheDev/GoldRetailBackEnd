@@ -95,11 +95,11 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'url' => env('DATABASE_URL'),
+            // 'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '27017'),
             'database' => env('DB_DATABASE','GoldRetailStore'),
-            'username' => env('DB_USERNAME','Linn'),
+            'username' => env('DB_USERNAME','root'),
             'password' => env('DB_PASSWORD',''),
         ]
 

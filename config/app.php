@@ -185,7 +185,8 @@ return [
         /*
          * Package Service Providers...
          */
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
+        // Jenssegers\Mongodb\MongodbServiceProvider::class,
+        MongoDB\Laravel\MongoDBServiceProvider::class,
         /*
          * Application Service Providers...
          */
