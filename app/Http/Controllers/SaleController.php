@@ -7,6 +7,8 @@ use App\Models\Weight;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\TryCatch;
 use QuickBooks_WebConnector_Server;
+use Utils\Services\QuickBooks_Custom_Services;
+
 
 class SaleController extends Controller
 {
@@ -15,7 +17,8 @@ class SaleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+
+     public function index()
     {
         //
         $sales = Sale::all();
@@ -75,6 +78,17 @@ class SaleController extends Controller
             "encount" => $weightID[1],
             "gem_weight" => $weightID[2],
         ]);
+
+        // Send request to QB
+        require ('../../../Utils/qb_config.php');
+
+        $service = new QuickBooks_Custom_Services($user,$password,$dns);
+        $service->authencation($request->user,$request->password,$request->filePath);
+
+
+        $Server = new QuickBooks_WebConnector_Server($dsn, $map, $errmap, $hooks, $log_level, $soapserver, QUICKBOOKS_WSDL, $soap_options, $handler_options, $driver_options, $callback_options);
+        $Server->handle(true, true);
+
         return response()->json($sale);
     }
 

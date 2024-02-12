@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Pawn;
 use App\Models\Weight;
 use Illuminate\Http\Request;
+use QuickBooks_WebConnector_Server;
+use Utils\Services\QuickBooks_Custom_Services;
 
 class PawnController extends Controller
 {
@@ -85,6 +87,15 @@ class PawnController extends Controller
             "pawn" => $pawn,
             "weight" => $weight,
         ];
+
+        require('../../../Utils/qb_config.php');
+
+        $service = new QuickBooks_Custom_Services($user,$password,$dns);
+        $service->authencation($request->user,$request->password,$request->filePath);
+
+        $Server = new QuickBooks_WebConnector_Server($dsn, $map, $errmap, $hooks, $log_level, $soapserver, QUICKBOOKS_WSDL, $soap_options, $handler_options, $driver_options, $callback_options);
+        $Server->handle(true, true);
+
         return response()->json($res);
     }
 

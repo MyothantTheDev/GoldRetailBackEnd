@@ -1,19 +1,30 @@
 <?php
 
-$map = array(
-    QUICKBOOKS_ADD_ACCOUNT => array('_quickbooks_customer_add_request','_quickbooks_customer_add_response'),
-    );
+$dns = env('QBDB_URI','mysql://root:root@localhost/quickbook_invoice_record');
+$user = env('QB_USERNAME','quickbooks');
+$password = env('QB_PASSWORD','password');
 
-$errmap = array(
-    '*' => '_quickbooks_error_catchall',
-    );
-$hooks = array();
-$log_level = QUICKBOOKS_LOG_DEVELOP;
-$soapserver = QUICKBOOKS_SOAPSERVER_BUILTIN;
-$soap_options = array();
-$handler_options = array(
-    'deny_concurrent_logins' => false,
-    'deny_reallyfast_logins' => false,
+$map = array(
+	QUICKBOOKS_ADD_CUSTOMER => array( 'QuickBooks_Custom_Services::quickbooks_custom_add_request', 'QuickBooks_Custom_Services::quickbooks_custom_add_response' ),
 );
-$driver_options = array();
-$callback_options = array();
+
+// This is entirely optional, use it to trigger actions when an error is returned by QuickBooks
+$errmap = array();
+
+// An array of callback hooks
+$hooks = array();
+
+// Logging level
+$log_level = QUICKBOOKS_LOG_DEVELOP;		// Use this level until you're sure everything works!!!
+
+// SOAP backend
+$soap = QUICKBOOKS_SOAPSERVER_BUILTIN;
+
+// SOAP options
+$soap_options = array();
+
+// Handler options
+$handler_options = array(
+	'authenticate' => 'QuickBooks_Custom_Services::authentication',
+	'deny_concurrent_logins' => false,
+);
